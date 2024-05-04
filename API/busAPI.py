@@ -12,6 +12,12 @@ class Route:
 
 
 @dataclass
+class VehiclesOnRoute:
+    rt: str
+    vids: [str]
+
+
+@dataclass
 class VehicleLocation:
     vid: str
     lat: float
@@ -38,15 +44,14 @@ def get_vehicle_ids(api_key, rt, rt_pid_data_feed=None):
             if "vehicle" in data["bustime-response"]:
                 vehicles = data["bustime-response"]["vehicle"]
                 vehicle_ids = [vehicle["vid"] for vehicle in vehicles]
-                return vehicle_ids
+                return VehiclesOnRoute(rt=rt, vids=vehicle_ids)
             else:
                 print("No 'vehicle' key found in the 'bustime-response'.")
         else:
             print("No 'bustime-response' key found in the API response.")
     else:
         print(f"Request failed with status code: {response.status_code}")
-
-    return []
+    return VehiclesOnRoute(rt=rt, vids=["NONE"])
 
 
 def get_routes(api_key, rt_pid_data_feed=None):
