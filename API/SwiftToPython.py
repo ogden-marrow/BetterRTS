@@ -11,13 +11,12 @@ class Route:
     rtnm: str
     rtclr: str
     rtdd: str
-    rtpidatafeed: str
+    rtpidatafeed: Optional[str] = None
 
 
 @dataclass
 class VehicleLocation:
     vid: str
-    rtpidatafeed: str
     tmstmp: str
     lat: str
     lon: str
@@ -36,7 +35,7 @@ class VehicleLocation:
     psgld: str
     stst: int
     stsd: str
-
+    rtpidatafeed: Optional[str] = None
 
 @dataclass
 class UserLocation:
@@ -56,12 +55,15 @@ class ServiceBulletinService:
 class ServiceBulletin:
     nm: str
     sbj: str
+    cse: str
     dtl: str
     brf: str
     prty: str
-    rtpidatafeed: str
+    efct: str
+    url: str
     srvc: List[ServiceBulletinService]
     mod: str
+    rtpidatafeed: Optional[str] = None
 
 
 @dataclass

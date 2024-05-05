@@ -1,16 +1,21 @@
-import busAPI
+import SwiftToPython as STP
 from secrets import API_KEY as api_key
 
 
 def main():
-    routes = busAPI.get_routes(api_key)
-    print(busAPI.get_service_bulletins(api_key, "5"))
-    for route in routes:
-        print(route)
-        on_route = busAPI.get_vehicle_ids(api_key, route.rt)
-        for vid in on_route.vids:
-            vehicle = busAPI.get_vehicle_location(api_key, vid)
-            print(vehicle)
+    def print_routes(routes):
+        for route in routes:
+            print("route")
+            on_route = STP.get_vehicles_with_locations(api_key, route.rt, completion=print_vehicles)
+            print("on_route")
+
+    def print_vehicles(vehicles):
+        print("vehicles")
+
+    def print_service_bulletins(bulletins):
+        print(bulletins)
+
+    STP.get_service_bulletins(api_key, "5", completion=print_service_bulletins)
 
 
 if __name__ == "__main__":
