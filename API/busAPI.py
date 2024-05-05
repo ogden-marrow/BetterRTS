@@ -24,6 +24,43 @@ class VehicleLocation:
     lon: float
 
 
+@dataclass
+class ServiceBulletin:
+    nm: str
+    sbj: str
+    dtl: str
+    brf: str
+    prty: str
+
+
+def get_service_bulletins(api_key, rt):
+    url = "http://riderts.app/bustime/api/v3/getservicebulletins"
+    params = {"key": api_key, "rt": rt, "format": "json"}
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+
+        if "bustime-response" in data:
+            if "sb" in data["bustime-response"]:
+                service_bulletins_data = data["bustime-response"]["sb"]
+                service_bulletins = [ServiceBulletin(nm=bulletin["nm"],
+                                                     sbj=bulletin["sbj"],
+                                                     dtl=bulletin["dtl"],
+                                                     brf=bulletin["brf"],
+                                                     prty=bulletin["prty"]) for bulletin in service_bulletins_data]
+                return service_bulletins
+            else:
+                print("No 'sb' key found in the 'bustime-response'.")
+        else:
+            print("No 'bustime-response' key found in the API response.")
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+
+    return []
+
+
 def get_vehicle_ids(api_key, rt, rt_pid_data_feed=None):
     url = "http://riderts.app/bustime/api/v3/getvehicles"
     params = {
