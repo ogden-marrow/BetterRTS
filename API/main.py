@@ -1,8 +1,8 @@
 import busAPI
+from secrets import API_KEY as api_key
 
 
 def main():
-    api_key = "R4zHP4vKjXpqNPHRgvqmBy5Tn"
     routes = busAPI.get_routes(api_key)
     print(busAPI.get_service_bulletins(api_key, "5"))
     for route in routes:
